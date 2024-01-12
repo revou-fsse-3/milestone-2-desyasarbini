@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 25px;
+  padding: 50px;
+}
+
+.innerContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.display {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.displayButton {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
