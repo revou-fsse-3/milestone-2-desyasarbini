@@ -3,15 +3,24 @@ import { useQuery } from 'react-query'
 import { Button, Card, Input, PokemonCard } from '../../components'
 import stylespage from '../PokemonPage/PokemonPage.module.css'
 import styles from './HomePage.module.css'
-// import { getPokemon } from '../../api/getPokemon'
 import axios from "axios"
 
+interface PokemonType {
+    slot: number;
+    type: {
+      name: string;
+    };
+}
+
 interface Pokemon {
-    id: number
-    name: string
-    type: string
-    weight: number
-    height: number
+    id: number;
+    name: string;
+    sprites: {
+      front_default: string;
+    };
+    types: PokemonType[];
+    height: number;
+    weight: number;
 }
 
 const HomePage = () => {
@@ -21,42 +30,42 @@ const HomePage = () => {
     const [pokemon, setPokemon] = useState({
         id:'',
         name: '',
-        species: '',
         img: '',
         types: '',
-        hp: '',
-        attack: '',
-        defense: '',
         weight: '',
-        height: ''
+        height: '',
     })
     const searchPokemon = () => { 
-        axios.get(` https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-        .then((response) => setPokemon({
-            id: response.data.id,
-            name: pokemonName,
-            species: response.data.species.name,
-            img: response.data.sprites.front_default,
-            types: response.data.types[0].type.name,
-            hp: response.data.stats[0].base_stat,
-            attack: response.data.stats[1].base_stat,
-            defense: response.data.stats[2].base_stat,
-            weight: response.data.weight,
-            height: response.data.height
-        }))
-        setPokemonChosen(true)
-    }
+        axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+            .then((response) => {
+                const typesArray = response.data.types.map((typeObject: { type: { name: string } }) => typeObject.type.name);
+    
+                setPokemon({
+                    id: response.data.id,
+                    name: pokemonName,
+                    img: response.data.sprites.front_default,
+                    types: typesArray.join(', '), // Join the array into a string if needed
+                    weight: response.data.weight,
+                    height: response.data.height
+                });
+    
+                setPokemonChosen(true);
+            })
+            .catch((error) => {
+                console.error('Error fetching Pokemon:', error);
+            });
+    };
 
     return (
         <div className={styles.container}>
             <Input 
-                className="border-solid border-2 border-sky-500 rounded-md w-full"
+                className="border-solid border-2 border-amber-500 rounded-lg w-1/2 p-2"
                 type='text' 
                 placeholder='search your pokemon' 
                 onChange={(event) => {
                 setPokemonName(event.target.value)
             }}/>
-            <button onClick={searchPokemon}>search Pokemon</button>
+            <button onClick={searchPokemon} className={styles.buttonSearch}>search Pokemon</button>
             <div className={styles.innerContainer}>
                 <div className={styles.display}>
                     {!pokemonChosen ? (<h1>choose your pokemon</h1>) : (
@@ -79,17 +88,6 @@ const HomePage = () => {
                                 </div>
                             </div>
                         </PokemonCard>
-                        // <Card>
-                        //     <Card padding={10}>
-                        //         <h1 className='text-center'>{pokemon.name}</h1>
-                        //         <img src={pokemon.img} alt="pokemon-image" />
-                        //         <h3>Species: {pokemon.species}</h3>
-                        //         <h3>Type: {pokemon.types}</h3>
-                        //         <h4>HP: {pokemon.hp}</h4>
-                        //         <h4>Attack: {pokemon.attack}</h4>
-                        //         <h4>Defense: {pokemon.defense}</h4> 
-                        //     </Card>    
-                        // </Card>
                     )}
                 </div>
             </div>

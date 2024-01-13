@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  align-items: center;
   width: 100%;
   flex-direction: column;
   gap: 25px;
@@ -29,4 +30,16 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.8rem;
+}
+
+.buttonSearch {
+  background-color: #254daa;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 100vmax;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25);
+  transition: 0.2s;
 }
