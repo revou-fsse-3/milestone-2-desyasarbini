@@ -1,15 +1,16 @@
 
 import styles from './Navbar.module.css'
 import logo from '../../assets/logo.png'
-import PokemonCard from '../PokemonCard'
-import Card from '../Card'
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+    const navigate = useNavigate(); 
+
     return (
         <div className={styles.wrapper}>
             <img src={logo} alt="logo-Pokemon-Web"/>
             <ul className={styles.navList}>
-                <li><button className={`${styles} btn`} id="version">ALL</button></li>
+                <li><button onClick={() => navigate('/')} className={`${styles} btn`} id="version">ALL</button></li>
                 <li><button className={`${styles.normal} btn`} id="normal">NORMAL</button></li>
                 <li><button className={`${styles.fire} btn`} id="fire">FIRE</button></li>
                 <li><button className={`${styles.water} btn`} id="water">WATER</button></li>
@@ -28,6 +29,7 @@ const Navbar = () => {
                 <li><button className={`${styles.dragon} btn`} id="dragon">DRAGON</button></li>
                 <li><button className={`${styles.fairy} btn`} id="fairy">FAIRY</button></li>
                 <li><button className={`${styles.shadow} btn`} id="shadow">SHADOW</button></li>
+                <li><button onClick={() => navigate('/pokemon-search')} className={`${styles.shadow} btn`} id="search">Search</button></li>
             </ul>
         </div>
     )

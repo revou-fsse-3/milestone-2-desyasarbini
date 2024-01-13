@@ -16,7 +16,7 @@ function App() {
           element: <PokemonPage/>
         },
         {
-          path: '/pokemon',
+          path: '/pokemon-search',
           element: <HomePage/>
         },
         

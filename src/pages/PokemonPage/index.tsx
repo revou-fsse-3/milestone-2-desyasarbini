@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, PokemonCard } from "../../components"
+import { PokemonCard } from "../../components"
 import styles from '../../components/Navbar/Navbar.module.css'
 import stylespage from './PokemonPage.module.css'
-import { click } from '@testing-library/user-event/dist/click';
 
 interface PokemonType {
     slot: number;
@@ -53,7 +52,6 @@ const PokemonPage: React.FC = () => {
     useEffect(() => {
         console.log('Fetched Pokemon List:', pokemonList);
         pokemonList.forEach((pokemon) => {
-          // Check if the pokemon object has the 'id' property
           if ('id' in pokemon) {
             let pokeId = pokemon.id.toString();
                 while (pokeId.length < 3) {
