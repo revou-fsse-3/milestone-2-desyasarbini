@@ -1,38 +1,72 @@
-
-import styles from './Navbar.module.css'
-import logo from '../../assets/logo.png'
+import React, { useState, useEffect } from 'react';
+import styles from './Navbar.module.css';
+import logo from '../../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
-    const navigate = useNavigate(); 
-
-    return (
-        <div className={styles.wrapper}>
-            <img src={logo} alt="logo-Pokemon-Web"/>
-            <ul className={styles.navList}>
-                <li><button onClick={() => navigate('/')} className={`${styles} btn`} id="version">ALL</button></li>
-                <li><button className={`${styles.normal} btn`} id="normal">NORMAL</button></li>
-                <li><button className={`${styles.fire} btn`} id="fire">FIRE</button></li>
-                <li><button className={`${styles.water} btn`} id="water">WATER</button></li>
-                <li><button className={`${styles.grass} btn`} id="grass">GRASS</button></li>
-                <li><button className={`${styles.electric} btn`} id="electric">ELECTRIC</button></li>
-                <li><button className={`${styles.ice} btn`} id="ice">ICE</button></li>
-                <li><button className={`${styles.fighting} btn`} id="fighting">FIGHTING</button></li>
-                <li><button className={`${styles.poison} btn`} id="poison">POISON</button></li>
-                <li><button className={`${styles.ground} btn`} id="ground">GROUND</button></li>
-                <li><button className={`${styles.flying} btn`} id="flying">FLYING</button></li>
-                <li><button className={`${styles.psychic} btn`} id="psychic">PSYCHIC</button></li>
-                <li><button className={`${styles.bug} btn`} id="bug">BUG</button></li>
-                <li><button className={`${styles.rock} btn`} id="rock">ROCK</button></li>
-                <li><button className={`${styles.ghost} btn`} id="ghost">GHOST</button></li>
-                <li><button className={`${styles.dark} btn`} id="dark">DARK</button></li>
-                <li><button className={`${styles.dragon} btn`} id="dragon">DRAGON</button></li>
-                <li><button className={`${styles.fairy} btn`} id="fairy">FAIRY</button></li>
-                <li><button className={`${styles.shadow} btn`} id="shadow">SHADOW</button></li>
-                <li><button onClick={() => navigate('/pokemon-search')} className={`${styles.shadow} btn`} id="search">Search</button></li>
-            </ul>
-        </div>
-    )
+interface PokemonData {
+  name: string;
+  // Add more properties based on the structure of the fetched data
 }
 
-export default Navbar
+const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+  const URL = 'https://pokeapi.co/api/v2/type/';
+  const [pokemonData, setPokemonData] = useState<PokemonData | null>(null);
+
+  const fetchPokemonData = async (idOrName: string) => {
+    try {
+      const response = await fetch(`${URL}${idOrName}/`);
+      const data: PokemonData = await response.json();
+      setPokemonData(data);
+      console.log('Fetched Pokemon Data:', data);
+    } catch (error) {
+      console.error('Error fetching Pokemon data:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch initial data based on default Pokemon ID or Name
+    fetchPokemonData('all');
+  }, []);
+
+  const handleCategoryClick = (category: string) => {
+    const route = category === 'all' ? '/' : `/pokemon/${category}`;
+    navigate(route);
+    fetchPokemonData(category);
+  };
+
+  const categories = ['all', 'normal', 'fire', 'water', 'grass', 'electric', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dark', 'dragon', 'fairy', 'shadow'];
+
+  return (
+    <div className={styles.wrapper}>
+      <img src={logo} alt="logo-Pokemon-Web" />
+      <ul className={styles.navList}>
+        {categories.map(category => (
+          <li key={category}>
+            <button
+              onClick={() => handleCategoryClick(category)}
+              className={`${styles[category]} btn`}
+              id={category}
+            >
+              {category}
+            </button>
+          </li>
+        ))}
+        <li>
+          <button onClick={() => navigate('/pokemon-search')} className={`${styles.shadow} btn`} id="search">
+            search
+          </button>
+        </li>
+      </ul>
+      {/* Display fetched Pokemon data */}
+      {pokemonData && (
+        <div>
+          <h2>{pokemonData.name}</h2>
+          {/* Add more details based on the structure of the fetched data */}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Navbar;

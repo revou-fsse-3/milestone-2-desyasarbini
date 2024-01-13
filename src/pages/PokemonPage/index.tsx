@@ -5,48 +5,47 @@ import styles from '../../components/Navbar/Navbar.module.css'
 import stylespage from './PokemonPage.module.css'
 
 interface PokemonType {
-    slot: number;
-    type: {
-      name: string;
-    };
-  }
-  
-  interface Pokemon {
-    id: number;
+  slot: number;
+  type: {
     name: string;
-    sprites: {
-      front_default: string;
-    };
-    types: PokemonType[];
-    height: number;
-    weight: number;
-  }
+  };
+}
+  
+interface Pokemon {
+  id: number;
+  name: string;
+  sprites: {
+    front_default: string;
+  };
+  types: PokemonType[];
+  height: number;
+  weight: number;
+}
 
 const PokemonPage: React.FC = () => {
 
-    const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        const fetchPokemonData = async () => {
-          try {
-            const result: Pokemon[] = [];
-            const URL = 'https://pokeapi.co/api/v2/pokemon/';
-    
-            for (let i = 1; i <= 50; i++) {
-              const response = await axios.get<Pokemon>(`${URL}${i}`);
-              result.push(response.data);
-            }
-    
-            setPokemonList(result);
-          } catch (error) {
-            console.error('Error fetching Pokemon data:', error);
-          } finally {
-            setLoading(false);
+      const fetchPokemonData = async () => {
+        try {
+          const result: Pokemon[] = [];
+          const URL = 'https://pokeapi.co/api/v2/pokemon/';
+  
+          for (let i = 1; i <= 50; i++) {
+            const response = await axios.get<Pokemon>(`${URL}${i}`);
+            result.push(response.data);
           }
-        };
-    
-        fetchPokemonData();
+  
+          setPokemonList(result);
+        } catch (error) {
+          console.error('Error fetching Pokemon data:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchPokemonData();
     }, []);
 
     useEffect(() => {

@@ -1,6 +1,5 @@
 import {useState} from 'react'
-import { useQuery } from 'react-query'
-import { Button, Card, Input, PokemonCard } from '../../components'
+import { Input, PokemonCard } from '../../components'
 import stylespage from '../PokemonPage/PokemonPage.module.css'
 import styles from './HomePage.module.css'
 import axios from "axios"

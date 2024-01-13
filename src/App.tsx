@@ -1,7 +1,7 @@
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { PublicLayout } from './layout'
-import { HomePage, PokemonPage } from './pages'
+import { HomePage, PokemonPage, CategoryPokemonPage } from './pages'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient()
@@ -14,6 +14,14 @@ function App() {
         {
           path:'/',
           element: <PokemonPage/>
+        },
+        {
+          path:'/pokemon/all',
+          element: <PokemonPage/>
+        },
+        {
+          path:'/pokemon/:type',
+          element: <CategoryPokemonPage/>
         },
         {
           path: '/pokemon-search',
